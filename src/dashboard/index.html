@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#070714">
+<link rel="icon" type="image/svg+xml" href="/static/Data Bloom icon.svg">
+<title>BloomPlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css?v=3">
+</head>
+<body>
+
+<div class="app" id="app">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark"><img src="/static/Data Bloom icon.svg" alt="BloomPlay"></div>
+            <div class="brand-text">
+                <span class="brand-name">BloomPlay</span>
+                <span class="brand-sub">Dashboard</span>
+            </div>
+        </div>
+
+        <nav class="side-nav" id="sideNav">
+            <button class="side-item active" data-view="overview">
+                <span class="side-ico">◈</span><span class="side-lbl">Overview</span>
+            </button>
+            <button class="side-item" data-view="hardware">
+                <span class="side-ico">▤</span><span class="side-lbl">Hardware</span>
+            </button>
+            <button class="side-item" data-view="screenshots">
+                <span class="side-ico">◉</span><span class="side-lbl">Screenshots</span>
+            </button>
+            <button class="side-item" data-view="devices">
+                <span class="side-ico">⌘</span><span class="side-lbl">Devices</span>
+            </button>
+            <button class="side-item" data-view="settings">
+                <span class="side-ico">⚙</span><span class="side-lbl">Settings</span>
+            </button>
+        </nav>
+
+        <div class="side-foot">
+            <div class="host-pill" id="hostPill">
+                <span class="host-dot"></span>
+                <span id="hostName">Connecting…</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1 id="pageTitle">Overview</h1>
+                <p id="pageSub">Live system telemetry</p>
+            </div>
+            <div class="topbar-right">
+                <div class="conn" id="connStatus">
+                    <span class="conn-dot"></span>
+                    <span id="connText">Offline</span>
+                </div>
+                <div class="clock" id="clock">--:--</div>
+            </div>
+        </header>
+
+        <section class="view" id="view"></section>
+
+        <footer class="main-foot">
+            <span id="footInfo">Made with <span class="credit-heart">♥</span> by <a class="credit-link" href="https://linktr.ee/Data_Bloom" target="_blank" rel="noopener">Data Bloom</a></span>
+        </footer>
+    </main>
+
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bn-item active" data-view="overview">
+            <span class="bn-ico">◈</span><span class="bn-lbl">Overview</span>
+        </button>
+        <button class="bn-item" data-view="hardware">
+            <span class="bn-ico">▤</span><span class="bn-lbl">Hardware</span>
+        </button>
+        <button class="bn-item" data-view="screenshots">
+            <span class="bn-ico">◉</span><span class="bn-lbl">Shots</span>
+        </button>
+        <button class="bn-item" data-view="devices">
+            <span class="bn-ico">⌘</span><span class="bn-lbl">Devices</span>
+        </button>
+        <button class="bn-item" data-view="settings">
+            <span class="bn-ico">⚙</span><span class="bn-lbl">Settings</span>
+        </button>
+    </nav>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="Screenshot">
+    <button class="lb-close" id="lbClose">✕</button>
+</div>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-msg" id="modalMsg"></div>
+        <div class="modal-actions">
+            <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+            <button class="btn btn-danger" id="modalConfirm">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/app.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#070714">
+<link rel="icon" type="image/svg+xml" href="Data Bloom icon.svg">
+<title>BloomPlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root {
+    --bg-0: #07070f;
+    --bg-1: #0b0b1a;
+    --bg-2: #10102a;
+    --panel: rgba(20, 20, 48, 0.66);
+    --panel-solid: #14142e;
+    --panel-2: rgba(30, 30, 66, 0.55);
+    --panel-hover: rgba(38, 38, 84, 0.8);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.18);
+
+    --txt-0: #f2f3ff;
+    --txt-1: #c6c9ec;
+    --txt-2: #8e92bc;
+    --txt-3: #5b5e8c;
+
+    --accent: #7c6cff;
+    --accent-2: #4ecdc4;
+    --green: #2dd4a7;
+    --yellow: #f5c451;
+    --red: #ff6b6b;
+    --cyan: #4ecdc4;
+    --blue: #6ea8ff;
+    --purple: #a78bfa;
+    --pink: #ff6b9d;
+    --orange: #ffa25c;
+
+    --grad-accent: linear-gradient(135deg, #7c6cff 0%, #4ecdc4 100%);
+    --grad-warm: linear-gradient(135deg, #ff6b9d 0%, #ffa25c 100%);
+
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 9px;
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+
+    --font-display: 'Space Grotesk', 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { color-scheme: dark; }
+html, body { height: 100%; }
+
+body {
+    font-family: var(--font-body);
+    color: var(--txt-0);
+    background: var(--bg-0);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        radial-gradient(1000px 560px at 85% -10%, rgba(124, 108, 255, 0.16), transparent 60%),
+        radial-gradient(900px 620px at -10% 20%, rgba(78, 205, 196, 0.10), transparent 55%),
+        radial-gradient(760px 520px at 50% 110%, rgba(255, 107, 157, 0.08), transparent 60%),
+        linear-gradient(160deg, #0a0a1e 0%, #07070f 60%, #0b0b20 100%);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+}
+
+.app { display: flex; min-height: 100vh; min-height: 100dvh; }
+
+.sidebar {
+    width: 236px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 16px 18px;
+    padding-top: calc(26px + var(--safe-top));
+    border-right: 1px solid var(--border);
+    background: rgba(10, 10, 28, 0.55);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 22px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+
+.brand-mark {
+    width: 42px; height: 42px;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 20px;
+    color: #fff;
+    background: var(--grad-accent);
+    box-shadow: 0 8px 24px rgba(124, 108, 255, 0.35);
+}
+
+.brand-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.2px; }
+.brand-sub { display: block; font-size: 10.5px; color: var(--txt-2); letter-spacing: 0.4px; margin-top: 1px; }
+
+.side-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+
+.side-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    border: none; border-radius: var(--radius-md);
+    background: transparent; color: var(--txt-2);
+    font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
+    cursor: pointer; text-align: left;
+    transition: all 0.2s ease; position: relative;
+}
+
+.side-ico { width: 22px; font-size: 16px; text-align: center; color: var(--txt-3); transition: color 0.2s ease; }
+
+.side-item:hover { background: rgba(255, 255, 255, 0.04); color: var(--txt-0); }
+
+.side-item.active {
+    background: linear-gradient(90deg, rgba(124, 108, 255, 0.16), rgba(124, 108, 255, 0.04));
+    color: var(--txt-0);
+}
+.side-item.active .side-ico { color: var(--accent); }
+.side-item.active::before {
+    content: "";
+    position: absolute; left: -16px; top: 8px; bottom: 8px;
+    width: 3px; border-radius: 0 3px 3px 0;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+
+.side-foot { padding: 12px 6px 0; border-top: 1px solid var(--border); }
+
+.host-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px; border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+    font-size: 12px; color: var(--txt-1); overflow: hidden;
+}
+
+.host-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red); flex-shrink: 0;
+    box-shadow: 0 0 8px var(--red);
+    transition: all 0.3s ease;
+}
+.host-dot.online { background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite; }
+.host-dot.offline { background: var(--red); box-shadow: 0 0 8px var(--red); }
+#hostName { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+.main {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column;
+    padding: 26px 34px 18px;
+    padding-top: calc(26px + var(--safe-top));
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+
+.topbar-title h1 { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: 0.2px; }
+.topbar-title p { font-size: 12.5px; color: var(--txt-2); margin-top: 3px; }
+
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.conn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 13px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+}
+.conn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.conn.online { color: var(--green); border-color: rgba(45, 212, 167, 0.3); }
+.conn.online .conn-dot { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+.conn.offline { color: var(--red); border-color: rgba(255, 107, 107, 0.3); }
+.conn.offline .conn-dot { background: var(--red); }
+
+.clock { font-family: var(--font-display); font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 600; color: var(--txt-1); padding: 6px 4px; }
+
+.view { flex: 1; }
+
+.main-foot {
+    margin-top: 26px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--txt-3);
+    display: flex; align-items: center; gap: 6px; justify-content: center;
+    flex-wrap: wrap; text-align: center;
+}
+.credit-heart { color: var(--pink); animation: heartBeat 1.6s ease-in-out infinite; display: inline-block; }
+@keyframes heartBeat { 0%,100% { transform: scale(1); } 25% { transform: scale(1.25); } 40% { transform: scale(1); } }
+
+.bottom-nav {
+    display: none;
+    position: fixed; left: 50%; bottom: 14px;
+    transform: translateX(-50%);
+    z-index: 60;
+    width: min(94%, 560px);
+    background: rgba(14, 14, 40, 0.78);
+    backdrop-filter: blur(26px) saturate(1.4);
+    -webkit-backdrop-filter: blur(26px) saturate(1.4);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 7px 10px;
+    padding-bottom: calc(7px + var(--safe-bottom));
+    justify-content: space-around;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.bn-item {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    padding: 7px 12px 6px; border: none; background: transparent;
+    color: var(--txt-3); font-family: var(--font-body);
+    font-size: 10px; font-weight: 600; cursor: pointer;
+    border-radius: 999px; min-width: 52px; transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bn-ico { font-size: 19px; line-height: 1; transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1); }
+.bn-item.active {
+    color: #fff;
+    background: linear-gradient(180deg, rgba(124, 108, 255, 0.45), rgba(124, 108, 255, 0.12));
+    box-shadow: 0 4px 18px rgba(124, 108, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.bn-item.active .bn-ico { transform: translateY(-2px) scale(1.12); }
+.bn-item.active::after {
+    content: ""; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+    width: 22px; height: 6px; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 10px rgba(124, 108, 255, 0.8);
+}
+.bn-item:active { transform: scale(0.9); }
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    position: relative;
+    overflow: hidden;
+    animation: rise 0.35s ease both;
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.card-head { display: flex; align-items: center; gap: 11px; margin-bottom: 16px; }
+
+.card-ico {
+    width: 38px; height: 38px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+    background: rgba(124, 108, 255, 0.12); border: 1px solid rgba(124, 108, 255, 0.22);
+}
+.card-ico.c1 { background: rgba(124,108,255,0.12); border-color: rgba(124,108,255,0.25); }
+.card-ico.c2 { background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.25); }
+.card-ico.c3 { background: rgba(255,107,157,0.12); border-color: rgba(255,107,157,0.25); }
+.card-ico.c4 { background: rgba(255,162,92,0.12); border-color: rgba(255,162,92,0.25); }
+.card-ico.c5 { background: rgba(110,168,255,0.12); border-color: rgba(110,168,255,0.25); }
+
+.card-title { font-family: var(--font-display); font-size: 15.5px; font-weight: 600; flex: 1; }
+.card-sub { font-size: 10.5px; color: var(--txt-2); letter-spacing: 0.6px; text-transform: uppercase; }
+.card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.stat-grid { margin-bottom: 16px; }
+
+.stat-tile {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+.stat-tile:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.stat-tile::after {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--tile-color, var(--accent)), transparent);
+    opacity: 0.8;
+}
+
+.stat-top { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+.stat-ico {
+    width: 30px; height: 30px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; background: rgba(255, 255, 255, 0.05);
+}
+.stat-name { font-size: 11px; font-weight: 600; color: var(--txt-2); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.stat-main { display: flex; align-items: baseline; gap: 6px; }
+.stat-value { font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1.05; }
+.stat-unit { font-size: 13px; color: var(--txt-2); font-weight: 500; }
+.stat-mini { font-size: 10.5px; color: var(--txt-2); margin-top: 4px; }
+
+.bar-track { height: 6px; background: rgba(255, 255, 255, 0.06); border-radius: 6px; overflow: hidden; margin-top: 12px; }
+.bar-fill { height: 100%; border-radius: 6px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.gauge-tile { text-align: center; padding: 18px 14px; --tile-color: var(--g1); }
+.gauge-tile .stat-mini { text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gauge-wrap { display: flex; flex-direction: column; align-items: center; }
+.gauge {
+    --pct: 0;
+    width: 104px; height: 104px; border-radius: 50%;
+    background:
+        radial-gradient(circle at center, rgba(16,16,42,0.95) 0 60%, transparent 61%),
+        conic-gradient(var(--g1, var(--accent)) calc(var(--pct) * 1%), rgba(255,255,255,0.07) 0);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 8px 26px rgba(0,0,0,0.35);
+    transition: transform 0.25s ease;
+}
+.gauge-tile:hover .gauge { transform: scale(1.04); }
+.gauge-val {
+    position: relative; z-index: 1;
+    font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1;
+    color: var(--g1, var(--accent));
+}
+.gauge-unit {
+    position: relative; z-index: 1;
+    font-size: 9px; color: var(--txt-2); margin-top: 3px;
+    text-transform: uppercase; letter-spacing: 0.8px;
+}
+.gauge-label { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; font-weight: 600; color: var(--txt-1); }
+.gauge-ico { font-size: 14px; color: var(--g1, var(--accent)); }
+
+.therm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.therm { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.therm-track {
+    width: 24px; height: 120px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    display: flex; align-items: flex-end;
+}
+.therm-fill {
+    width: 100%; height: 0%;
+    background: linear-gradient(180deg, #2dd4a7, #4ecdc4);
+    border-radius: 999px;
+    box-shadow: 0 0 12px rgba(45, 212, 167, 0.45);
+    transition: height 0.7s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+}
+.therm-val b { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.therm-val span { font-size: 11px; color: var(--txt-2); }
+.therm-label { font-size: 11px; font-weight: 600; color: var(--txt-2); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.chart-box { width: 100%; }
+.perf-svg { width: 100%; height: auto; display: block; min-height: 140px; }
+.mini-chart { width: 100%; height: 70px; display: block; margin-top: 8px; }
+.cgrid line { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1; }
+.cline { fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.aline { stroke: none; vector-effect: non-scaling-stroke; }
+.c-cpu { stroke: #7c6cff; }
+.c-gpu { stroke: #ff6b9d; }
+.c-ram { stroke: #2dd4a7; }
+.a-down { stroke: #4ecdc4; }
+.a-up { stroke: #6ea8ff; }
+
+.chart-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-left: 8px; }
+.chart-legend .lg { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--txt-2); }
+.chart-legend .lg i { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+.chart-legend .lg b { color: var(--txt-0); font-family: var(--font-display); font-size: 12px; }
+
+.net-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.net-col { min-width: 0; }
+.ping-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px; color: var(--txt-2);
+}
+.ping-row b { font-family: var(--font-display); font-size: 18px; color: var(--txt-0); }
+.ping-tag { margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.ping-tag.good { color: var(--green); background: rgba(45,212,167,0.12); }
+.ping-tag.ok { color: var(--yellow); background: rgba(245,196,81,0.12); }
+.ping-tag.bad { color: var(--red); background: rgba(255,107,107,0.12); }
+
+.c-green { color: var(--green); }  .c-yellow { color: var(--yellow); }
+.c-red { color: var(--red); }      .c-cyan { color: var(--cyan); }
+.c-blue { color: var(--blue); }    .c-purple { color: var(--purple); }
+.c-pink { color: var(--pink); }    .c-orange { color: var(--orange); }
+.c-dim { color: var(--txt-2); }
+
+.f-green { background: var(--green); }  .f-yellow { background: var(--yellow); }
+.f-red { background: var(--red); }      .f-cyan { background: var(--cyan); }
+.f-blue { background: var(--blue); }    .f-purple { background: var(--purple); }
+.f-pink { background: var(--pink); }    .f-orange { background: var(--orange); }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 18px; border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--txt-0);
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease;
+    user-select: none; white-space: nowrap;
+}
+.btn:hover { background: rgba(255, 255, 255, 0.09); border-color: var(--border-strong); }
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: var(--grad-accent); border: none; color: #fff; box-shadow: 0 8px 24px rgba(124, 108, 255, 0.3); }
+.btn-primary:hover { filter: brightness(1.08); background: var(--grad-accent); }
+.btn-danger { background: rgba(255, 107, 107, 0.12); border-color: rgba(255, 107, 107, 0.35); color: var(--red); }
+.btn-danger:hover { background: rgba(255, 107, 107, 0.22); }
+.btn-ghost { background: transparent; }
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.05); }
+.btn-sm { padding: 7px 13px; font-size: 12px; border-radius: 10px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hw-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.hw-panel {
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.hw-panel:hover { transform: translateY(-2px); }
+.hw-panel--full { grid-column: 1 / -1; }
+
+.hw-panel { --hp: var(--accent); }
+.hw-panel::before {
+    content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--hp), transparent);
+    opacity: 0.9;
+}
+.hw-panel .hw-panel-ico { background: rgba(255, 255, 255, 0.06); color: var(--hp); }
+.hw-panel .hw-panel-title { color: color-mix(in srgb, var(--hp) 65%, var(--txt-0)); }
+.hw-panel .hw-panel-tag { color: var(--hp); border-color: color-mix(in srgb, var(--hp) 40%, transparent); background: color-mix(in srgb, var(--hp) 12%, transparent); }
+.hw-panel.hp-cpu { --hp: #7c6cff; border-color: rgba(124, 108, 255, 0.18); }
+.hw-panel.hp-gpu { --hp: #ff6b9d; border-color: rgba(255, 107, 157, 0.18); }
+.hw-panel.hp-ram { --hp: #2dd4a7; border-color: rgba(45, 212, 167, 0.18); }
+.hw-panel.hp-disk { --hp: #6ea8ff; border-color: rgba(110, 168, 255, 0.18); }
+.hw-panel.hp-sys { --hp: #4ecdc4; border-color: rgba(78, 205, 196, 0.18); }
+.hw-panel.hp-mobo { --hp: #a78bfa; border-color: rgba(167, 139, 250, 0.18); }
+.hw-panel.hp-display { --hp: #ffa25c; border-color: rgba(255, 162, 92, 0.18); }
+.hw-panel.hp-audio { --hp: #f5c451; border-color: rgba(245, 196, 81, 0.18); }
+.hw-panel.hp-batt { --hp: #2dd4a7; border-color: rgba(45, 212, 167, 0.18); }
+.hw-panel .hw-value { color: color-mix(in srgb, var(--hp) 42%, #fff); font-weight: 650; }
+.hw-panel .disk-name { color: var(--hp); }
+.hw-panel .bar-fill.f-green { background: linear-gradient(90deg, #2dd4a7, #4ecdc4); }
+.hw-panel .bar-fill.f-yellow { background: linear-gradient(90deg, #f5c451, #ffa25c); }
+.hw-panel .bar-fill.f-red { background: linear-gradient(90deg, #ff6b6b, #ff2d55); }
+
+.hw-panel-head { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; margin-bottom: 10px; border-bottom: 1px solid var(--border); }
+.hw-panel-ico {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; background: rgba(255, 255, 255, 0.05);
+}
+.hw-panel-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; flex: 1; }
+.hw-panel-tag {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 999px;
+    color: var(--txt-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+}
+
+.hw-row { display: flex; justify-content: space-between; gap: 12px; padding: 6.5px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.hw-row:last-child { border-bottom: none; }
+.hw-label { font-size: 12px; color: var(--txt-2); flex-shrink: 0; letter-spacing: 0.3px; }
+.hw-value { font-size: 13px; font-weight: 650; color: var(--txt-0); text-align: right; word-break: break-word; letter-spacing: 0.1px; }
+.hw-value b, .hw-value strong { font-weight: 700; }
+
+.disk-item { padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.disk-item:last-child { border-bottom: none; }
+.disk-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; gap: 8px; }
+.disk-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.disk-meta { color: var(--txt-2); font-size: 11px; text-align: right; flex-shrink: 0; }
+.disk-model { color: var(--txt-3); font-size: 10.5px; margin-bottom: 6px; word-break: break-word; }
+
+.sub-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.sub-item:last-child { border-bottom: none; }
+.sub-name { font-size: 12.5px; font-weight: 600; }
+.sub-detail { font-size: 11px; color: var(--txt-2); text-align: right; }
+
+.ss-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
+
+.ss-folder {
+    font-size: 11.5px; color: var(--txt-2);
+    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+    border-radius: 9px; padding: 8px 12px;
+    flex: 1; min-width: 180px;
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.shot {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.3);
+    aspect-ratio: 16 / 10;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.shot:hover { border-color: var(--border-strong); transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,0.4); }
+.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.shot-meta {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 14px 10px 8px;
+    background: linear-gradient(transparent, rgba(5, 5, 16, 0.92));
+    font-size: 10.5px; color: var(--txt-1);
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 6px;
+}
+.shot-time { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.shot-del {
+    width: 24px; height: 24px; border-radius: 7px; border: none;
+    background: rgba(255, 107, 107, 0.18); color: var(--red);
+    font-size: 12px; cursor: pointer; opacity: 0;
+    transition: opacity 0.2s ease; flex-shrink: 0;
+}
+.shot:hover .shot-del { opacity: 1; }
+
+.empty-state { text-align: center; padding: 48px 20px; color: var(--txt-2); }
+.empty-state .es-ico { font-size: 40px; margin-bottom: 12px; opacity: 0.7; }
+.empty-state h3 { font-family: var(--font-display); color: var(--txt-1); font-size: 16px; margin-bottom: 6px; }
+.empty-state p { font-size: 12.5px; }
+
+.dev-row { display: flex; align-items: center; gap: 14px; padding: 13px 4px; border-bottom: 1px solid var(--border); }
+.dev-row:last-child { border-bottom: none; }
+.dev-ico {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; background: rgba(78, 205, 196, 0.12); border: 1px solid rgba(78, 205, 196, 0.22);
+    flex-shrink: 0;
+}
+.dev-info { flex: 1; min-width: 0; }
+.dev-ip { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.dev-ua { font-size: 11px; color: var(--txt-2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dev-since { font-size: 10.5px; color: var(--txt-3); margin-top: 2px; }
+
+.settings-group { display: flex; flex-direction: column; }
+
+.set-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 13px 2px; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.set-row:last-child { border-bottom: none; }
+.set-label { font-size: 13.5px; font-weight: 600; }
+.set-desc { font-size: 11.5px; color: var(--txt-2); margin-top: 2px; }
+
+.toggle {
+    position: relative; width: 48px; height: 27px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1); border: none; cursor: pointer; flex-shrink: 0;
+    transition: background 0.25s ease;
+}
+.toggle::after {
+    content: ""; position: absolute; top: 3px; left: 3px;
+    width: 21px; height: 21px; border-radius: 50%; background: #fff;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.toggle.on { background: var(--green); }
+.toggle.on::after { transform: translateX(21px); }
+
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.swatch {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid transparent; cursor: pointer;
+    transition: all 0.2s ease; padding: 0;
+}
+.swatch:hover { transform: scale(1.12); }
+.swatch.selected { border-color: #fff; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15); }
+input[type="color"].swatch-custom { border: 1px solid var(--border); background: transparent; }
+
+.select {
+    background: rgba(255, 255, 255, 0.06); color: var(--txt-0);
+    border: 1px solid var(--border); border-radius: 9px;
+    padding: 8px 11px; font-size: 12.5px; font-family: var(--font-body);
+    max-width: 100%; min-width: 200px;
+    color-scheme: dark;
+}
+.select:focus { outline: none; border-color: var(--accent); }
+.select option {
+    background: #14142e;
+    color: var(--txt-0);
+    padding: 6px 10px;
+}
+
+.font-col { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.font-select { min-width: 240px; }
+.font-sample {
+    padding: 9px 14px; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed var(--border-strong);
+    font-size: 15px; color: var(--txt-1);
+    letter-spacing: 0.3px; white-space: nowrap;
+}
+
+.hex-input {
+    background: rgba(255, 255, 255, 0.06); color: var(--txt-0);
+    border: 1px solid var(--border); border-radius: 9px;
+    padding: 9px 12px; font-size: 12.5px; font-family: var(--font-display);
+    width: 130px; text-align: center; font-weight: 600; letter-spacing: 0.5px;
+}
+.hex-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 108, 255, 0.15); }
+
+.hotkey-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.hotkey-input {
+    background: rgba(255, 255, 255, 0.06); color: var(--txt-0);
+    border: 1px solid var(--border); border-radius: 9px;
+    padding: 9px 12px; font-size: 12.5px; font-family: var(--font-display);
+    width: 170px; text-align: center; font-weight: 600; letter-spacing: 0.4px;
+}
+.hotkey-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 108, 255, 0.15); }
+.hotkey-input::placeholder { color: var(--txt-3); }
+
+.range { width: 150px; accent-color: var(--accent); }
+.range-val { font-family: var(--font-display); font-weight: 700; font-size: 14px; min-width: 26px; text-align: center; }
+
+.pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; width: 150px; }
+.pos-cell {
+    height: 34px; border-radius: 9px;
+    border: 1px solid var(--border); background: rgba(255, 255, 255, 0.03);
+    cursor: pointer; position: relative; transition: all 0.2s ease;
+}
+.pos-cell::before { content: ""; position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--txt-3); transition: all 0.2s ease; }
+.pos-cell.tl::before { top: 6px; left: 6px; }
+.pos-cell.tr::before { top: 6px; right: 6px; }
+.pos-cell.bl::before { bottom: 6px; left: 6px; }
+.pos-cell.br::before { bottom: 6px; right: 6px; }
+.pos-cell.selected { border-color: var(--accent); background: rgba(124, 108, 255, 0.1); }
+.pos-cell.selected::before { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 8px 13px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+    font-size: 12.5px; color: var(--txt-1); cursor: pointer;
+    transition: all 0.2s ease; user-select: none;
+}
+.chip:hover { border-color: var(--border-strong); }
+.chip.selected { background: rgba(45, 212, 167, 0.12); border-color: rgba(45, 212, 167, 0.4); color: var(--txt-0); }
+.chip .tick { opacity: 0; transition: opacity 0.2s ease; }
+.chip.selected .tick { opacity: 1; }
+.chips-meta { font-size: 11px; color: var(--txt-3); margin-bottom: 10px; }
+
+.credit-link {
+    color: var(--accent-2); text-decoration: none; font-weight: 700;
+    border-bottom: 1px solid rgba(78, 205, 196, 0.35);
+    transition: all 0.2s ease;
+}
+.credit-link:hover { color: var(--txt-0); border-color: var(--accent-2); }
+
+.offline-wrap { text-align: center; padding: 70px 20px; animation: rise 0.4s ease both; }
+.offline-wrap .o-ico { font-size: 52px; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.offline-wrap h2 { font-family: var(--font-display); font-size: 22px; margin-bottom: 8px; }
+.offline-wrap p { color: var(--txt-2); font-size: 13.5px; line-height: 1.6; max-width: 380px; margin: 0 auto 22px; }
+
+.hidden { display: none !important; }
+
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(4, 4, 14, 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; animation: fade 0.2s ease;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+    background: var(--panel-solid); border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg); padding: 24px;
+    max-width: 360px; width: 100%; box-shadow: var(--shadow); animation: rise 0.25s ease;
+}
+.modal-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.modal-msg { font-size: 13px; color: var(--txt-1); line-height: 1.55; margin-bottom: 20px; }
+.modal-actions { display: flex; gap: 10px; }
+.modal-actions .btn { flex: 1; }
+
+.toast {
+    position: fixed; left: 50%; bottom: 26px;
+    transform: translateX(-50%) translateY(80px);
+    z-index: 200;
+    background: var(--panel-solid); border: 1px solid var(--border-strong);
+    border-radius: 12px; padding: 12px 20px;
+    font-size: 13px; font-weight: 600; box-shadow: var(--shadow);
+    opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none; max-width: 90vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.ok { border-color: rgba(45, 212, 167, 0.5); }
+.toast.err { border-color: rgba(255, 107, 107, 0.5); }
+
+.lightbox {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(4, 4, 14, 0.92);
+    display: none; align-items: center; justify-content: center;
+    padding: 30px;
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: var(--shadow); }
+.lb-close {
+    position: absolute; top: 20px; right: 20px;
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid var(--border-strong); background: rgba(255, 255, 255, 0.08);
+    color: var(--txt-0); font-size: 16px; cursor: pointer;
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 9px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); background-clip: content-box; }
+
+
+@media (max-width: 1180px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 1024px) {
+    .main { padding: 22px 22px 16px; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .hw-wrap { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+    .sidebar { display: none; }
+    .main { padding: 16px 14px 0; padding-top: calc(16px + var(--safe-top)); max-width: 100%; }
+    .bottom-nav { display: flex; }
+    .app { padding-bottom: calc(96px + var(--safe-bottom)); }
+    .topbar { margin-bottom: 16px; }
+    .topbar-title h1 { font-size: 20px; }
+    .topbar-title p { font-size: 11.5px; }
+    .clock { display: none; }
+    .conn { font-size: 10px; padding: 5px 11px; }
+
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: 12px; }
+    .stat-grid { gap: 12px; }
+    .stat-grid .stat-tile { width: 100%; }
+
+    .card { padding: 15px; border-radius: var(--radius-md); }
+    .stat-value { font-size: 24px; }
+    .gauge { width: 92px; height: 92px; }
+    .gauge-val { font-size: 19px; }
+    .therm-track { height: 100px; }
+    .perf-svg { min-height: 120px; }
+    .mini-chart { height: 58px; }
+
+    .ss-toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .ss-toolbar .btn { width: 100%; padding: 10px 8px; font-size: 12px; }
+    .ss-toolbar .btn-primary { grid-column: 1 / -1; }
+    .ss-folder { grid-column: 1 / -1; width: 100%; flex: none; min-width: 0; font-size: 10.5px; padding: 7px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .shot-meta { padding: 12px 8px 6px; font-size: 9.5px; }
+    .shot-del { opacity: 1; width: 22px; height: 22px; }
+
+    .hw-wrap { gap: 12px; }
+    .hw-panel { padding: 13px; }
+    .hw-panel-title { font-size: 13px; }
+    .hw-label { font-size: 11.5px; }
+    .hw-value { font-size: 12.5px; }
+    .net-grid { grid-template-columns: 1fr; gap: 14px; }
+    .card-head { flex-wrap: wrap; }
+    .chart-legend { margin-left: 0; margin-top: 6px; width: 100%; }
+    .set-row { flex-wrap: wrap; gap: 10px; }
+    .set-label { font-size: 13px; }
+    .select, .font-select { min-width: 0; width: 100%; }
+    .font-col { align-items: stretch; }
+    .font-sample { white-space: normal; }
+    .hotkey-input { flex: 1; min-width: 120px; }
+    .pos-grid { width: 100%; }
+}
+
+@media (max-width: 420px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .main { padding-left: 12px; padding-right: 12px; }
+    .gallery { grid-template-columns: 1fr; gap: 10px; }
+    .bottom-nav { width: calc(100% - 20px); }
+    .stat-value { font-size: 22px; }
+    .range { flex: 1; min-width: 100px; }
+    .select { width: 100%; }
+}
+
+@media (hover: none) {
+    .stat-tile:hover, .shot:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark"><img src="Data Bloom icon.svg" alt="BloomPlay"></div>
+            <div class="brand-text">
+                <span class="brand-name">BloomPlay</span>
+                <span class="brand-sub">Dashboard</span>
+            </div>
+        </div>
+
+        <nav class="side-nav" id="sideNav">
+            <button class="side-item active" data-view="overview">
+                <span class="side-ico">◈</span><span class="side-lbl">Overview</span>
+            </button>
+            <button class="side-item" data-view="hardware">
+                <span class="side-ico">▤</span><span class="side-lbl">Hardware</span>
+            </button>
+            <button class="side-item" data-view="screenshots">
+                <span class="side-ico">◉</span><span class="side-lbl">Screenshots</span>
+            </button>
+            <button class="side-item" data-view="devices">
+                <span class="side-ico">⌘</span><span class="side-lbl">Devices</span>
+            </button>
+            <button class="side-item" data-view="settings">
+                <span class="side-ico">⚙</span><span class="side-lbl">Settings</span>
+            </button>
+        </nav>
+
+        <div class="side-foot">
+            <div class="host-pill" id="hostPill">
+                <span class="host-dot"></span>
+                <span id="hostName">Connecting…</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1 id="pageTitle">Overview</h1>
+                <p id="pageSub">Live system telemetry</p>
+            </div>
+            <div class="topbar-right">
+                <div class="conn" id="connStatus">
+                    <span class="conn-dot"></span>
+                    <span id="connText">Offline</span>
+                </div>
+                <div class="clock" id="clock">--:--</div>
+            </div>
+        </header>
+
+        <section class="view" id="view"></section>
+
+        <footer class="main-foot">
+            <span id="footInfo">Made with <span class="credit-heart">♥</span> by <a class="credit-link" href="https://linktr.ee/Data_Bloom" target="_blank" rel="noopener">Data Bloom</a></span>
+        </footer>
+    </main>
+
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bn-item active" data-view="overview">
+            <span class="bn-ico">◈</span><span class="bn-lbl">Overview</span>
+        </button>
+        <button class="bn-item" data-view="hardware">
+            <span class="bn-ico">▤</span><span class="bn-lbl">Hardware</span>
+        </button>
+        <button class="bn-item" data-view="screenshots">
+            <span class="bn-ico">◉</span><span class="bn-lbl">Shots</span>
+        </button>
+        <button class="bn-item" data-view="devices">
+            <span class="bn-ico">⌘</span><span class="bn-lbl">Devices</span>
+        </button>
+        <button class="bn-item" data-view="settings">
+            <span class="bn-ico">⚙</span><span class="bn-lbl">Settings</span>
+        </button>
+    </nav>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="Screenshot">
+    <button class="lb-close" id="lbClose">✕</button>
+</div>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-msg" id="modalMsg"></div>
+        <div class="modal-actions">
+            <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+            <button class="btn btn-danger" id="modalConfirm">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+window.__DEMO__ = true;
+
+const STATS_MS = 1200;
+const HARDWARE_MS = 20000;
+const DEVICES_MS = 4000;
+const SHOTS_MS = 6000;
+
+const ACCESS_TOKEN = new URLSearchParams(window.location.search).get('token') || '';
+const DEMO_MODE = window.__DEMO__ === true || new URLSearchParams(window.location.search).get('demo') === '1';
+
+const viewEl    = document.getElementById('view');
+const connEl    = document.getElementById('connStatus');
+const connText  = document.getElementById('connText');
+const hostName  = document.getElementById('hostName');
+const hostDot   = document.querySelector('.host-dot');
+const clockEl   = document.getElementById('clock');
+const pageTitle = document.getElementById('pageTitle');
+const pageSub   = document.getElementById('pageSub');
+const footInfo  = document.getElementById('footInfo');
+
+let currentView = 'overview';
+let pollTimer = null;
+let hardwareCache = null;
+let overlayCfg = null;
+let shotsCache = null;
+let devicesCache = null;
+
+let overviewBuilt = false;
+let settingsBuilt = false;
+
+const HIST_MAX = 60;
+const hist = { cpu: [], gpu: [], ram: [], down: [], up: [] };
+
+const NAV_ITEMS = document.querySelectorAll('.side-item, .bn-item');
+
+const VIEW_META = {
+    overview:    { title: 'Overview',    sub: 'Live system telemetry' },
+    hardware:    { title: 'Hardware',    sub: 'Full PC inventory' },
+    screenshots: { title: 'Screenshots', sub: 'Remote capture & gallery' },
+    devices:     { title: 'Devices',     sub: 'Connected clients' },
+    settings:    { title: 'Settings',    sub: 'Overlay & remote control' },
+};
+
+const OVERLAY_COLORS = ['#7c6cff', '#4ecdc4', '#ff6b9d', '#ffa25c', '#6ea8ff', '#a78bfa', '#2dd4a7', '#f5c451'];
+
+function api(url, opts = {}) {
+    if (DEMO_MODE) return demoApi(url, opts);
+    const sep = url.includes('?') ? '&' : '?';
+    return fetch(url + sep + 'token=' + encodeURIComponent(ACCESS_TOKEN), {
+        cache: 'no-store',
+        ...opts,
+        headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    });
+}
+
+const demo = { stats: null, hardware: null, shots: [], devices: [], blocked: [], overlay: null, seq: 0 };
+
+function demoStats() {
+    demo.seq++;
+    const t = demo.seq / 5;
+    const w = Math.sin(t) * 10 + Math.sin(t / 2.3) * 6;
+    return {
+        cpu: Math.max(4, Math.min(97, 46 + w)),
+        cpu_temp: Math.max(30, Math.min(93, 60 + w / 2)),
+        cpu_temp_status: 'OK',
+        ram: { used: Math.max(6, Math.min(30, 12 + w / 3)), total: 32, percent: Math.max(8, Math.min(96, 38 + w)) },
+        gpu: { name: 'NVIDIA GeForce RTX 4070', usage: Math.max(3, Math.min(96, 58 + w)),
+                vram_used: 5.1, vram_total: 12, temp: Math.max(32, Math.min(90, 63 + w / 2)) },
+        network: { download: Math.max(0.3, 26 + w * 1.5), upload: Math.max(0.2, 6.5 + w / 2), ping: Math.max(8, 33 + w / 3) },
+        battery: { percent: 82, charging: false, health_percent: 91, health_label: 'Excellent' },
+        fps: { fps: Math.max(20, 140 - Math.abs(w) * 2), status: 'Capturing' },
+    };
+}
+
+demo.stats = demoStats();
+
+demo.hardware = {
+    cpu: { name: 'AMD Ryzen 7 7800X3D', brand: 'AMD', cores: 8, threads: 16, base_clock: 4.2, cache: '96KB L2, 96MB L3', architecture: 'x64' },
+    gpu: { name: 'NVIDIA GeForce RTX 4070', vendor: 'NVIDIA', memory: '12 GB', driver: '31.0.15.2760' },
+    ram: { size: '32 GB', type: 'DDR5', speed: 6000, brand: 'G.Skill', form_factor: 'DIMM', slots: 2 },
+    disk: [
+        { name: 'C:', type: 'SSD', model: 'Samsung 990 Pro', total: 512, used: 218, free: 294, percent: 43 },
+        { name: 'D:', type: 'HDD', model: 'Seagate Barracuda', total: 1024, used: 640, free: 384, percent: 63 },
+    ],
+    system: { os: 'Windows 11 Pro', hostname: 'GAMING-RIG', arch: 'x64', kernel: '10.0.22631' },
+    bios: { board: 'ASUSTeK ROG STRIX B650E-F', bios: '2007', serial: 'M60XXXXXXXXX' },
+    display: {
+        monitors: [{ name: 'ASUS ROG 240Hz', resolution: '2560x1440', refresh_rate: '240 Hz', primary: true }],
+        primary_resolution: '2560x1440', refresh_rate: '240 Hz', screen_size: '27.0"', adapter: 'NVIDIA GeForce RTX 4070',
+    },
+    audio: { devices: [{ name: 'Realtek High Definition Audio', manufacturer: 'Realtek', status: 'OK' }, { name: 'HyperX Cloud II', manufacturer: 'HP', status: 'OK' }], primary_device: 'Realtek', manufacturer: 'Realtek' },
+    battery: { name: 'Internal Battery', manufacturer: 'ASUS', chemistry: 'Lithium Ion', design_capacity: '5320 mWh', full_charge_capacity: '4850 mWh', serial_number: 'XXXX-YYYY', design_voltage: '15400 mV' },
+    total_storage: '1536 GB',
+};
+
+for (let i = 0; i < 4; i++) {
+    const d = new Date(Date.now() - i * 3600e3);
+    demo.shots.push({ name: `Screenshot_${d.toISOString().slice(0, 19).replace(/[:T]/g, '-')}.png`, size: 1200000 + i * 300000, mtime: Math.floor(d.getTime() / 1000) });
+}
+
+demo.devices = [
+    { ip: '192.168.1.42', user_agent: 'Mozilla/5.0 (Linux; Android 14; Pixel 8)', connected_since: Date.now() / 1000 - 320 },
+    { ip: '192.168.1.55', user_agent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4)', connected_since: Date.now() / 1000 - 95 },
+];
+demo.blocked = [{ ip: '192.168.1.99', remaining_seconds: 34 }];
+
+demo.overlay = {
+    enabled: true,
+    color: '#7c6cff',
+    position: 'top-right',
+    font_size: 14,
+    font_family: "Consolas, 'Segoe UI', monospace",
+    fields: ['cpu', 'gpu', 'fps', 'ram', 'ping'],
+    hotkey: 'Ctrl+Shift+O',
+    available_fields: [['cpu', 'CPU %'], ['cpu_temp', 'CPU Temp'], ['gpu', 'GPU %'], ['gpu_temp', 'GPU Temp'], ['ram', 'RAM'], ['fps', 'FPS'], ['download', 'Download'], ['upload', 'Upload'], ['ping', 'Ping'], ['battery', 'Battery']],
+    available_positions: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+    available_fonts: ["Consolas, 'Segoe UI', monospace", "'Segoe UI', Tahoma, sans-serif", "'Courier New', monospace", 'Arial, sans-serif', 'Tahoma, sans-serif'],
+};
+
+function jsonOk(obj) {
+    return Promise.resolve(new Response(JSON.stringify(obj), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+    }));
+}
+
+function demoApi(url, opts) {
+    const method = (opts && opts.method) || 'GET';
+    const u = url.split('?')[0];
+
+    if (method === 'GET') {
+        if (u === '/stats') return jsonOk(demoStats());
+        if (u === '/hardware') return jsonOk(demo.hardware);
+        if (u === '/system') return jsonOk({ hostname: 'GAMING-RIG', os: 'Windows 11 Pro', total_storage: '1536 GB' });
+        if (u === '/screenshot/list') return jsonOk({ folder: 'C:\\Users\\Gamer\\Pictures\\BloomPlay', screenshots: demo.shots });
+        if (u === '/devices') return jsonOk({ devices: demo.devices });
+        if (u === '/devices/blocked') return jsonOk({ blocked: demo.blocked });
+        if (u === '/overlay/config') return jsonOk(demo.overlay);
+    } else {
+        if (u === '/screenshot/capture') {
+            const d = new Date();
+            demo.shots.unshift({ name: `Screenshot_${d.toISOString().slice(0, 19).replace(/[:T]/g, '-')}.png`, size: 900000, mtime: Math.floor(d.getTime() / 1000) });
+            return jsonOk({ name: demo.shots[0].name, path: '', size: 900000 });
+        }
+        if (u === '/screenshot/delete') {
+            try {
+                const body = JSON.parse((opts && opts.body) || '{}');
+                demo.shots = demo.shots.filter(s => s.name !== body.name);
+            } catch {}
+            return jsonOk({ deleted: true });
+        }
+        if (u === '/overlay/config') {
+            try {
+                const body = JSON.parse((opts && opts.body) || '{}');
+                Object.assign(demo.overlay, body);
+            } catch {}
+            return jsonOk(demo.overlay);
+        }
+        if (u === '/export/pdf') {
+            return Promise.resolve(new Response(new Blob(['%PDF-1.4 demo']), {
+                status: 200,
+                headers: { 'Content-Type': 'application/pdf' },
+            }));
+        }
+        if (u === '/devices/disconnect') {
+            const ip = new URLSearchParams(url.split('?')[1] || '').get('ip');
+            demo.devices = demo.devices.filter(d => d.ip !== ip);
+            return jsonOk({ disconnected: true });
+        }
+        if (u === '/devices/unblock') {
+            demo.blocked = [];
+            return jsonOk({ unblocked: true });
+        }
+        if (u === '/shutdown') return jsonOk({ status: 'shutting down' });
+    }
+    return jsonOk({});
+}
+
+function safe(val, fb = '—') {
+    if (val === undefined || val === null || val === '') return fb;
+    if (typeof val === 'object') { try { return JSON.stringify(val); } catch { return '[obj]'; } }
+    return String(val);
+}
+function safeHtml(val, fb = '—') { return esc(safe(val, fb)); }
+function num(v) { const n = Number(v); return isNaN(n) ? 0 : n; }
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function fillClass(v, warn = 70, crit = 85) {
+    const n = num(v);
+    if (n >= crit) return 'f-red';
+    if (n >= warn) return 'f-yellow';
+    return 'f-green';
+}
+
+function shotImgSrc(name) {
+    if (!DEMO_MODE) {
+        return '/screenshot/file?name=' + encodeURIComponent(name) + '&token=' + encodeURIComponent(ACCESS_TOKEN);
+    }
+    let h = 0;
+    for (let i = 0; i < String(name).length; i++) h = (h * 31 + String(name).charCodeAt(i)) >>> 0;
+    const hue = h % 360;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="hsl(' + hue + ',45%,22%)"/>' +
+        '<stop offset="1" stop-color="hsl(' + ((hue + 45) % 360) + ',45%,9%)"/>' +
+        '</linearGradient></defs><rect width="320" height="200" fill="url(#g)"/>' +
+        '<circle cx="160" cy="92" r="24" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="3"/>' +
+        '<circle cx="160" cy="92" r="7" fill="rgba(255,255,255,0.4)"/>' +
+        '<path d="M126 138 L162 108 L188 126 L214 106 L240 130 L240 140 L126 140 Z" fill="rgba(255,255,255,0.18)"/>' +
+        '</svg>');
+}
+
+function smoothPath(values, w, h, minV, maxV) {
+    if (values.length < 2) return '';
+    const range = (maxV - minV) || 1;
+    const pts = values.map((v, i) => [(i / (values.length - 1)) * w, h - ((Math.min(maxV, Math.max(minV, v)) - minV) / range) * h]);
+    let d = 'M ' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+        const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+        d += ' C ' + c1x.toFixed(1) + ' ' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ' ' + c2y.toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d;
+}
+function areaPath(values, w, h, minV, maxV) {
+    const line = smoothPath(values, w, h, minV, maxV);
+    if (!line) return '';
+    return line + ' L ' + w.toFixed(1) + ' ' + h.toFixed(1) + ' L 0 ' + h.toFixed(1) + ' Z';
+}
+function pushHist(key, v) {
+    hist[key].push(num(v));
+    if (hist[key].length > HIST_MAX) hist[key].shift();
+}
+
+function setText(id, txt) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+}
+function setStyle(id, prop, val) {
+    const el = document.getElementById(id);
+    if (el) el.style[prop] = val;
+}
+function setCssVar(id, prop, val) {
+    const el = document.getElementById(id);
+    if (el) el.style.setProperty(prop, val);
+}
+
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+function toast(msg, kind = 'ok') {
+    toastEl.textContent = msg;
+    toastEl.className = 'toast show ' + kind;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.className = 'toast ' + kind; }, 2600);
+}
+
+const modalOverlay = document.getElementById('modalOverlay');
+const modalTitle   = document.getElementById('modalTitle');
+const modalMsg     = document.getElementById('modalMsg');
+const modalCancel  = document.getElementById('modalCancel');
+const modalConfirm = document.getElementById('modalConfirm');
+let confirmHandler = null;
+
+function confirmBox(title, msg, onYes) {
+    modalTitle.textContent = title;
+    modalMsg.textContent = msg;
+    confirmHandler = onYes;
+    modalOverlay.classList.remove('hidden');
+}
+modalCancel.addEventListener('click', () => { modalOverlay.classList.add('hidden'); confirmHandler = null; });
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) { modalOverlay.classList.add('hidden'); confirmHandler = null; } });
+modalConfirm.addEventListener('click', () => {
+    modalOverlay.classList.add('hidden');
+    const h = confirmHandler;
+    confirmHandler = null;
+    if (h) h();
+});
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+function openLightbox(src) { lightboxImg.src = src; lightbox.classList.add('open'); }
+document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+
+function fmtClock() {
+    const d = new Date();
+    clockEl.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+setInterval(fmtClock, 1000);
+fmtClock();
+
+function setOnline(online) {
+    connEl.className = 'conn ' + (online ? 'online' : 'offline');
+    connText.textContent = online ? 'Online' : 'Offline';
+    hostDot.className = 'host-dot ' + (online ? 'online' : 'offline');
+    if (!online) hostName.textContent = 'Disconnected';
+}
+
+function gaugeTile(id, ico, name, c1, c2, unit) {
+    return `
+        <div class="stat-tile gauge-tile" style="--g1:${c1};--g2:${c2}">
+            <div class="gauge-wrap">
+                <div class="gauge" id="${id}Gauge" style="--pct:0">
+                    <span class="gauge-val" id="${id}Val">--</span>
+                    <span class="gauge-unit">${unit}</span>
+                </div>
+                <div class="gauge-label"><span class="gauge-ico">${ico}</span>${name}</div>
+            </div>
+            <div class="stat-mini" id="${id}Mini">—</div>
+        </div>`;
+}
+
+function buildOverview() {
+    return `
+    <div class="grid-4 stat-grid">
+        ${gaugeTile('cpu', '◈', 'CPU', '#7c6cff', '#a78bfa', '%')}
+        ${gaugeTile('gpu', '▤', 'GPU', '#ff6b9d', '#ffa25c', '%')}
+        ${gaugeTile('ram', '▥', 'RAM', '#2dd4a7', '#4ecdc4', 'GB')}
+        ${gaugeTile('fps', '⌬', 'FPS', '#4ecdc4', '#6ea8ff', '')}
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-ico c1">◈</div>
+            <div class="card-title">Performance</div>
+            <span class="card-sub">Last ${HIST_MAX}s · CPU / GPU / RAM</span>
+            <div class="chart-legend">
+                <span class="lg"><i style="background:#7c6cff"></i>CPU <b id="lgCpu">--</b></span>
+                <span class="lg"><i style="background:#ff6b9d"></i>GPU <b id="lgGpu">--</b></span>
+                <span class="lg"><i style="background:#2dd4a7"></i>RAM <b id="lgRam">--</b></span>
+            </div>
+        </div>
+        <div class="chart-box">
+            <svg id="perfChart" class="perf-svg" viewBox="0 0 600 200" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="gradCpu" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#7c6cff" stop-opacity="0.34"/><stop offset="1" stop-color="#7c6cff" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="gradGpu" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#ff6b9d" stop-opacity="0.30"/><stop offset="1" stop-color="#ff6b9d" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="gradRam" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#2dd4a7" stop-opacity="0.30"/><stop offset="1" stop-color="#2dd4a7" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <g class="cgrid">
+                    <line x1="0" y1="0" x2="600" y2="0"/><line x1="0" y1="50" x2="600" y2="50"/>
+                    <line x1="0" y1="100" x2="600" y2="100"/><line x1="0" y1="150" x2="600" y2="150"/>
+                    <line x1="0" y1="200" x2="600" y2="200"/>
+                </g>
+                <path id="areaCpu" class="aline" fill="url(#gradCpu)" stroke="none"/>
+                <path id="areaGpu" class="aline" fill="url(#gradGpu)" stroke="none"/>
+                <path id="areaRam" class="aline" fill="url(#gradRam)" stroke="none"/>
+                <path id="lineCpu" class="cline c-cpu"/>
+                <path id="lineGpu" class="cline c-gpu"/>
+                <path id="lineRam" class="cline c-ram"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-head">
+                <div class="card-ico c2">⇅</div>
+                <div class="card-title">Network</div>
+                <span class="card-sub">Live · Mbps</span>
+            </div>
+            <div class="net-grid">
+                <div class="net-col">
+                    <div class="stat-top" style="margin-bottom:4px"><span class="stat-name">Download</span></div>
+                    <div class="stat-main"><span class="stat-value c-cyan" id="netDown">0.0</span><span class="stat-unit">Mbps</span></div>
+                    <svg class="mini-chart" viewBox="0 0 300 80" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="gradDown" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stop-color="#4ecdc4" stop-opacity="0.38"/><stop offset="1" stop-color="#4ecdc4" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <g class="cgrid">
+                            <line x1="0" y1="20" x2="300" y2="20"/><line x1="0" y1="40" x2="300" y2="40"/>
+                            <line x1="0" y1="60" x2="300" y2="60"/><line x1="0" y1="80" x2="300" y2="80"/>
+                        </g>
+                        <path id="areaDown" fill="url(#gradDown)" stroke="none"/>
+                        <path id="lineDown" class="aline a-down"/>
+                    </svg>
+                </div>
+                <div class="net-col">
+                    <div class="stat-top" style="margin-bottom:4px"><span class="stat-name">Upload</span></div>
+                    <div class="stat-main"><span class="stat-value c-blue" id="netUp">0.0</span><span class="stat-unit">Mbps</span></div>
+                    <svg class="mini-chart" viewBox="0 0 300 80" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="gradUp2" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stop-color="#6ea8ff" stop-opacity="0.38"/><stop offset="1" stop-color="#6ea8ff" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <g class="cgrid">
+                            <line x1="0" y1="20" x2="300" y2="20"/><line x1="0" y1="40" x2="300" y2="40"/>
+                            <line x1="0" y1="60" x2="300" y2="60"/><line x1="0" y1="80" x2="300" y2="80"/>
+                        </g>
+                        <path id="areaUp" fill="url(#gradUp2)" stroke="none"/>
+                        <path id="lineUp" class="aline a-up"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="ping-row">
+                <span>Ping</span><b id="pingVal">--</b><span class="stat-unit">ms</span>
+                <span class="ping-tag good" id="pingTag">—</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div class="card-ico c4">◉</div>
+                <div class="card-title">Temperatures</div>
+                <span class="card-sub">°C</span>
+            </div>
+            <div class="therm-grid">
+                <div class="therm">
+                    <div class="therm-track"><div class="therm-fill" id="cpuThermFill" style="height:0%"></div></div>
+                    <div class="therm-val"><b id="cpuTempBig">—</b><span>°C</span></div>
+                    <div class="therm-label">CPU</div>
+                    <div class="stat-mini" id="cpuTempStatus">Sensor unavailable</div>
+                </div>
+                <div class="therm">
+                    <div class="therm-track"><div class="therm-fill" id="gpuThermFill" style="height:0%"></div></div>
+                    <div class="therm-val"><b id="gpuTempBig">—</b><span>°C</span></div>
+                    <div class="therm-label">GPU</div>
+                    <div class="stat-mini" id="gpuTempMini">Sensor unavailable</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="stat-tile gauge-tile" style="--g1:#2dd4a7;--g2:#4ecdc4">
+            <div class="gauge-wrap">
+                <div class="gauge" id="batGauge" style="--pct:0">
+                    <span class="gauge-val" id="batVal">--</span>
+                    <span class="gauge-unit">%</span>
+                </div>
+                <div class="gauge-label"><span class="gauge-ico">▮</span>Battery</div>
+            </div>
+            <div class="stat-mini" id="batMini">—</div>
+        </div>
+        <div class="stat-tile gauge-tile" style="--g1:#f5c451;--g2:#ffa25c">
+            <div class="gauge-wrap">
+                <div class="gauge" id="bhGauge" style="--pct:0">
+                    <span class="gauge-val" id="bhVal">--</span>
+                    <span class="gauge-unit">%</span>
+                </div>
+                <div class="gauge-label"><span class="gauge-ico">◐</span>Battery Health</div>
+            </div>
+            <div class="stat-mini" id="bhMini">—</div>
+        </div>
+    </div>
+    `;
+}
+
+function updateGauge(id, pct) {
+    const v = Math.min(100, Math.max(0, num(pct)));
+    setCssVar(id + 'Gauge', '--pct', v);
+}
+
+function tempColor(t) {
+    if (t === null || t === undefined) return 'linear-gradient(180deg,#3a3a5c,#2a2a44)';
+    if (t >= 85) return 'linear-gradient(180deg,#ff6b6b,#ff2d55)';
+    if (t >= 70) return 'linear-gradient(180deg,#ffa25c,#ff6b6b)';
+    if (t >= 55) return 'linear-gradient(180deg,#f5c451,#ffa25c)';
+    return 'linear-gradient(180deg,#2dd4a7,#4ecdc4)';
+}
+
+function updateOverview(data) {
+    const cpu = num(data.cpu);
+    const gpuObj = data.gpu || {};
+    const gpu = num(gpuObj.usage);
+    const ram = data.ram || {};
+    const ramPct = num(ram.percent);
+    const net = data.network || {};
+    const down = num(net.download), up = num(net.upload), ping = num(net.ping);
+    const bat = data.battery || {};
+    const fpsObj = data.fps || {};
+
+    pushHist('cpu', cpu); pushHist('gpu', gpu); pushHist('ram', ramPct);
+    pushHist('down', down); pushHist('up', up);
+
+    updateGauge('cpu', cpu);
+    setText('cpuVal', Math.round(cpu));
+    setText('cpuMini', cpu >= 85 ? 'High load' : cpu >= 70 ? 'Moderate load' : 'Normal load');
+
+    updateGauge('gpu', gpu);
+    setText('gpuVal', Math.round(gpu));
+    setText('gpuMini', safeHtml(gpuObj.name, 'GPU'));
+
+    updateGauge('ram', ramPct);
+    setText('ramVal', num(ram.used).toFixed(1));
+    setText('ramMini', num(ram.total) ? `${Math.round(ramPct)}% of ${num(ram.total).toFixed(0)} GB` : '—');
+
+    const fps = fpsObj.fps;
+    updateGauge('fps', fps === null || fps === undefined ? 0 : fps > 240 ? 100 : (fps / 240) * 100);
+    setText('fpsVal', fps === null || fps === undefined ? 'N/A' : Math.round(fps));
+    setText('fpsMini', safeHtml(fpsObj.status, ''));
+
+    const W = 600, H = 200;
+    document.getElementById('lineCpu').setAttribute('d', smoothPath(hist.cpu, W, H, 0, 100));
+    document.getElementById('areaCpu').setAttribute('d', areaPath(hist.cpu, W, H, 0, 100));
+    document.getElementById('lineGpu').setAttribute('d', smoothPath(hist.gpu, W, H, 0, 100));
+    document.getElementById('areaGpu').setAttribute('d', areaPath(hist.gpu, W, H, 0, 100));
+    document.getElementById('lineRam').setAttribute('d', smoothPath(hist.ram, W, H, 0, 100));
+    document.getElementById('areaRam').setAttribute('d', areaPath(hist.ram, W, H, 0, 100));
+    setText('lgCpu', Math.round(cpu) + '%');
+    setText('lgGpu', Math.round(gpu) + '%');
+    setText('lgRam', Math.round(ramPct) + '%');
+
+    const NW = 300, NH = 80;
+    const netMax = Math.max(Math.max(...hist.down, 1), Math.max(...hist.up, 1)) * 1.15;
+    document.getElementById('lineDown').setAttribute('d', smoothPath(hist.down, NW, NH, 0, netMax));
+    document.getElementById('areaDown').setAttribute('d', areaPath(hist.down, NW, NH, 0, netMax));
+    document.getElementById('lineUp').setAttribute('d', smoothPath(hist.up, NW, NH, 0, netMax));
+    document.getElementById('areaUp').setAttribute('d', areaPath(hist.up, NW, NH, 0, netMax));
+    setText('netDown', down.toFixed(1));
+    setText('netUp', up.toFixed(1));
+
+    setText('pingVal', Math.round(ping));
+    const tag = document.getElementById('pingTag');
+    if (tag) {
+        if (ping < 80) { tag.textContent = 'Great'; tag.className = 'ping-tag good'; }
+        else if (ping < 150) { tag.textContent = 'Good'; tag.className = 'ping-tag ok'; }
+        else { tag.textContent = 'Poor'; tag.className = 'ping-tag bad'; }
+    }
+
+    const cpuT = data.cpu_temp;
+    const gpuT = gpuObj.temp;
+    const cpuFill = document.getElementById('cpuThermFill');
+    const gpuFill = document.getElementById('gpuThermFill');
+    if (cpuT === null || cpuT === undefined) {
+        setStyle('cpuThermFill', 'height', '0%');
+        setText('cpuTempBig', '—');
+        setText('cpuTempStatus', 'Sensor unavailable');
+    } else {
+        setStyle('cpuThermFill', 'height', Math.min(100, num(cpuT)) + '%');
+        if (cpuFill) cpuFill.style.background = tempColor(num(cpuT));
+        setText('cpuTempBig', Math.round(cpuT));
+        setText('cpuTempStatus', safeHtml(data.cpu_temp_status, 'Live reading'));
+    }
+    if (gpuT === null || gpuT === undefined) {
+        setStyle('gpuThermFill', 'height', '0%');
+        setText('gpuTempBig', '—');
+        setText('gpuTempMini', 'Sensor unavailable');
+    } else {
+        setStyle('gpuThermFill', 'height', Math.min(100, num(gpuT)) + '%');
+        if (gpuFill) gpuFill.style.background = tempColor(num(gpuT));
+        setText('gpuTempBig', Math.round(gpuT));
+        setText('gpuTempMini', gpuT >= 85 ? 'Hot' : gpuT >= 70 ? 'Warm' : 'Normal');
+    }
+
+    const pct = bat.percent;
+    if (pct === null || pct === undefined || pct === 'N/A') {
+        updateGauge('bat', 0);
+        setText('batVal', '—'); setText('batMini', 'No battery (desktop)');
+    } else {
+        updateGauge('bat', pct);
+        setText('batVal', Math.round(num(pct)));
+        setText('batMini', bat.charging ? '⚡ Charging' : 'On battery');
+    }
+
+    const hp = bat.health_percent;
+    if (hp === null || hp === undefined) {
+        updateGauge('bh', 0);
+        setText('bhVal', '—'); setText('bhMini', 'Unavailable');
+    } else {
+        updateGauge('bh', hp);
+        setText('bhVal', Math.round(num(hp)));
+        setText('bhMini', safeHtml(bat.health_label, num(hp) >= 90 ? 'Excellent' : 'Good'));
+    }
+}
+
+function hwRow(label, value) {
+    if (value === undefined || value === null || value === '' || value === 'Unknown') return '';
+    return `<div class="hw-row"><span class="hw-label">${esc(label)}</span><span class="hw-value">${esc(value)}</span></div>`;
+}
+
+function renderHardware(hw) {
+    const cpu = hw.cpu || {}, gpu = hw.gpu || {}, ram = hw.ram || {}, sys = hw.system || {},
+          bios = hw.bios || {}, disp = hw.display || {}, audio = hw.audio || {}, bat = hw.battery || {};
+    const disks = hw.disk || [];
+
+    const diskHtml = disks.length ? disks.map(d => `
+        <div class="disk-item">
+            <div class="disk-top">
+                <span class="disk-name">${esc(d.name)}</span>
+                <span class="disk-meta">${esc(d.type || '')} · ${d.used}/${d.total} GB · ${d.percent}% used</span>
+            </div>
+            ${d.model ? `<div class="disk-model">${esc(d.model)}</div>` : ''}
+            <div class="bar-track"><div class="bar-fill ${fillClass(d.percent)}" style="width:${Math.min(100, d.percent)}%"></div></div>
+            <div class="disk-model" style="margin-top:4px">${d.free} GB free of ${d.total} GB</div>
+        </div>`).join('') : '<div class="hw-row"><span class="hw-label">No disk info</span></div>';
+
+    const monitorHtml = (disp.monitors || []).map(m => `
+        <div class="sub-item"><span class="sub-name">${esc(m.name || 'Monitor')}</span>
+        <span class="sub-detail">${esc(m.resolution || '')} ${esc(m.refresh_rate || '')}${m.primary ? ' · Primary' : ''}</span></div>`).join('');
+
+    const audioHtml = (audio.devices || []).map(a => `
+        <div class="sub-item"><span class="sub-name">${esc(a.name || '')}</span>
+        <span class="sub-detail">${esc(a.status || '')}${a.manufacturer && a.manufacturer !== 'Unknown' ? ' · ' + esc(a.manufacturer) : ''}</span></div>`).join('');
+
+    return `
+    <div class="card">
+        <div class="card-head">
+            <div class="card-ico c1">▤</div>
+            <div class="card-title">Hardware Inventory</div>
+            <div class="card-actions">
+                <button class="btn btn-primary btn-sm" id="pdfBtn">⬇ Export PDF</button>
+            </div>
+        </div>
+        <div class="hw-wrap">
+            <div class="hw-panel hp-cpu">
+                <div class="hw-panel-head"><div class="hw-panel-ico">◈</div><div class="hw-panel-title">Processor</div><span class="hw-panel-tag">CPU</span></div>
+                ${hwRow('Model', cpu.name)}${hwRow('Brand', cpu.brand)}${hwRow('Cores', cpu.cores)}${hwRow('Threads', cpu.threads)}${hwRow('Base Clock', cpu.base_clock ? cpu.base_clock + ' GHz' : '')}${hwRow('Cache', cpu.cache)}${hwRow('Architecture', cpu.architecture)}
+            </div>
+            <div class="hw-panel hp-gpu">
+                <div class="hw-panel-head"><div class="hw-panel-ico">▣</div><div class="hw-panel-title">Graphics</div><span class="hw-panel-tag">GPU</span></div>
+                ${hwRow('Model', gpu.name)}${hwRow('Vendor', gpu.vendor)}${hwRow('VRAM', gpu.memory)}${hwRow('Driver', gpu.driver)}
+            </div>
+            <div class="hw-panel hp-ram">
+                <div class="hw-panel-head"><div class="hw-panel-ico">▥</div><div class="hw-panel-title">Memory</div><span class="hw-panel-tag">RAM</span></div>
+                ${hwRow('Total Size', ram.size)}${hwRow('Type', ram.type)}${hwRow('Speed', ram.speed ? ram.speed + ' MHz' : '')}${hwRow('Brand', ram.brand)}${hwRow('Form Factor', ram.form_factor)}${hwRow('Slots', ram.slots)}
+            </div>
+            <div class="hw-panel hp-disk">
+                <div class="hw-panel-head"><div class="hw-panel-ico">▦</div><div class="hw-panel-title">Storage</div><span class="hw-panel-tag">${disks.length} Vol</span></div>
+                ${diskHtml}
+            </div>
+            <div class="hw-panel hp-sys">
+                <div class="hw-panel-head"><div class="hw-panel-ico">◳</div><div class="hw-panel-title">System</div><span class="hw-panel-tag">OS</span></div>
+                ${hwRow('Operating System', sys.os)}${hwRow('Hostname', sys.hostname)}${hwRow('Architecture', sys.arch)}${hwRow('Kernel', sys.kernel)}${hwRow('Total Storage', hw.total_storage)}
+            </div>
+            <div class="hw-panel hp-mobo">
+                <div class="hw-panel-head"><div class="hw-panel-ico">◫</div><div class="hw-panel-title">Motherboard</div><span class="hw-panel-tag">BIOS</span></div>
+                ${hwRow('Board', bios.board)}${hwRow('BIOS Version', bios.bios)}${hwRow('Serial', bios.serial)}
+            </div>
+            <div class="hw-panel hp-display">
+                <div class="hw-panel-head"><div class="hw-panel-ico">◷</div><div class="hw-panel-title">Display</div><span class="hw-panel-tag">${(disp.monitors || []).length} Mon</span></div>
+                ${hwRow('Screen Size', disp.screen_size)}${hwRow('Resolution', disp.primary_resolution)}${hwRow('Refresh Rate', disp.refresh_rate)}${hwRow('Adapter', disp.adapter)}
+                <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.06)">${monitorHtml || hwRow('No monitor info', '')}</div>
+            </div>
+            <div class="hw-panel hp-audio">
+                <div class="hw-panel-head"><div class="hw-panel-ico">♪</div><div class="hw-panel-title">Audio</div><span class="hw-panel-tag">${(audio.devices || []).length} Dev</span></div>
+                ${hwRow('Primary Device', audio.primary_device)}${hwRow('Manufacturer', audio.manufacturer)}
+                <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.06)">${audioHtml || hwRow('No audio devices', '')}</div>
+            </div>
+            <div class="hw-panel hp-batt">
+                <div class="hw-panel-head"><div class="hw-panel-ico">▮</div><div class="hw-panel-title">Battery</div><span class="hw-panel-tag">Specs</span></div>
+                ${hwRow('Name', bat.name)}${hwRow('Manufacturer', bat.manufacturer)}${hwRow('Chemistry', bat.chemistry)}${hwRow('Design Capacity', bat.design_capacity)}${hwRow('Full Charge Capacity', bat.full_charge_capacity)}${hwRow('Serial Number', bat.serial_number)}${hwRow('Design Voltage', bat.design_voltage)}
+            </div>
+        </div>
+    </div>`;
+}
+
+function wireHardware() {
+    const pdfBtn = document.getElementById('pdfBtn');
+    if (pdfBtn) pdfBtn.addEventListener('click', exportPdf);
+}
+
+async function exportPdf() {
+    toast('Generating PDF…');
+    try {
+        const res = await api('/export/pdf', { method: 'POST' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'BloomPlay_Hardware.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        toast('PDF downloaded');
+    } catch {
+        toast('PDF export failed', 'err');
+    }
+}
+
+function renderScreenshots(data) {
+    const shots = (data && data.screenshots) || [];
+    const folder = (data && data.folder) || '';
+
+    const gallery = shots.length ? `<div class="gallery">
+        ${shots.map(s => `
+            <div class="shot" data-name="${esc(s.name)}">
+                <img src="${shotImgSrc(s.name)}" alt="${esc(s.name)}" loading="lazy">
+                <div class="shot-meta">
+                    <span class="shot-time">${new Date(s.mtime * 1000).toLocaleString()}</span>
+                    <button class="shot-del" data-del="${esc(s.name)}">✕</button>
+                </div>
+            </div>`).join('')}
+    </div>` : `
+    <div class="empty-state">
+        <div class="es-ico">◉</div>
+        <h3>No screenshots yet</h3>
+        <p>Capture a full screen or active window to build your gallery.</p>
+    </div>`;
+
+    return `
+    <div class="card">
+        <div class="card-head">
+            <div class="card-ico c3">◉</div>
+            <div class="card-title">Capture</div>
+            <span class="card-sub">Saved on the PC</span>
+        </div>
+        <div class="ss-toolbar">
+            <button class="btn btn-primary" id="shotFull">◉ Capture Full Screen</button>
+            <button class="btn" id="shotWin">▢ Capture Active Window</button>
+            <button class="btn" id="shotRefresh">⟳ Refresh</button>
+            <span class="ss-folder" title="${esc(folder)}">📁 ${esc(folder || 'Screenshot folder')}</span>
+        </div>
+        ${gallery}
+    </div>`;
+}
+
+function wireScreenshots() {
+    const fullBtn = document.getElementById('shotFull');
+    const winBtn = document.getElementById('shotWin');
+    const refresh = document.getElementById('shotRefresh');
+    if (fullBtn) fullBtn.addEventListener('click', () => captureShot('full'));
+    if (winBtn) winBtn.addEventListener('click', () => captureShot('window'));
+    if (refresh) refresh.addEventListener('click', loadShots);
+
+    document.querySelectorAll('.shot').forEach(shot => {
+        shot.addEventListener('click', (e) => {
+            if (e.target.closest('.shot-del')) return;
+            openLightbox(shot.querySelector('img').src);
+        });
+    });
+    document.querySelectorAll('.shot-del').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const name = btn.dataset.del;
+            confirmBox('Delete screenshot?', `This permanently removes "${name}" from the PC.`, () => deleteShot(name));
+        });
+    });
+}
+
+async function captureShot(kind) {
+    toast('Capturing…');
+    try {
+        const res = await api('/screenshot/capture', { method: 'POST', body: JSON.stringify({ kind }) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const d = await res.json();
+        toast('Saved: ' + d.name);
+        loadShots();
+    } catch {
+        toast('Capture failed', 'err');
+    }
+}
+
+async function deleteShot(name) {
+    try {
+        const res = await api('/screenshot/delete', { method: 'POST', body: JSON.stringify({ name }) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        toast('Deleted');
+        loadShots();
+    } catch {
+        toast('Delete failed', 'err');
+    }
+}
+
+function renderDevices(data) {
+    const devices = (data && data.devices) || [];
+    const blocked = (data && data.blocked) || [];
+
+    const devHtml = devices.length ? devices.map(d => {
+        const since = Math.floor(num(d.connected_since) / 60) * 60;
+        return `
+        <div class="dev-row">
+            <div class="dev-ico">${(d.user_agent || '').toLowerCase().includes('mobile') ? '📱' : '💻'}</div>
+            <div class="dev-info">
+                <div class="dev-ip">${esc(d.ip)}</div>
+                <div class="dev-ua">${esc(d.user_agent || 'Unknown device')}</div>
+                <div class="dev-since">Connected ${new Date(since * 1000).toLocaleString()}</div>
+            </div>
+            <button class="btn btn-danger btn-sm" data-disc="${esc(d.ip)}">Disconnect</button>
+        </div>`;
+    }).join('') : `
+        <div class="empty-state">
+            <div class="es-ico">⌘</div>
+            <h3>No devices connected</h3>
+            <p>Open the dashboard on another device to see it here.</p>
+        </div>`;
+
+    const blockHtml = blocked.length ? `
+    <div class="card">
+        <div class="card-head"><div class="card-ico c4">⊘</div><div class="card-title">Blocked Devices</div></div>
+        ${blocked.map(b => {
+            const rem = Math.ceil(num(b.remaining_seconds) / 10) * 10;
+            return `
+            <div class="dev-row">
+                <div class="dev-ico">⊘</div>
+                <div class="dev-info">
+                    <div class="dev-ip">${esc(b.ip)}</div>
+                    <div class="dev-since">Blocked for ${rem}s more</div>
+                </div>
+                <button class="btn btn-sm" data-unblock="${esc(b.ip)}">Unblock</button>
+            </div>`;
+        }).join('')}
+    </div>` : '';
+
+    return `
+    <div class="card">
+        <div class="card-head">
+            <div class="card-ico c2">⌘</div>
+            <div class="card-title">Connected Devices</div>
+            <span class="card-sub">${devices.length} active</span>
+        </div>
+        ${devHtml}
+    </div>
+    ${blockHtml}`;
+}
+
+function wireDevices() {
+    document.querySelectorAll('[data-disc]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const ip = btn.dataset.disc;
+            confirmBox('Disconnect device?', `"${ip}" will be disconnected and blocked for 60 seconds.`, async () => {
+                try {
+                    await api('/devices/disconnect?ip=' + encodeURIComponent(ip), { method: 'POST' });
+                    toast('Disconnected');
+                    loadDevices();
+                } catch { toast('Failed', 'err'); }
+            });
+        });
+    });
+    document.querySelectorAll('[data-unblock]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const ip = btn.dataset.unblock;
+            try {
+                await api('/devices/unblock?ip=' + encodeURIComponent(ip), { method: 'POST' });
+                toast('Unblocked');
+                loadDevices();
+            } catch { toast('Failed', 'err'); }
+        });
+    });
+}
+
+function renderSettings(cfg) {
+    if (!cfg) return '';
+    const fields = cfg.available_fields || [];
+    const positions = cfg.available_positions || ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+    const fonts = cfg.available_fonts || [];
+    const sel = new Set(cfg.fields || []);
+
+    const swatches = OVERLAY_COLORS.map(c =>
+        `<button class="swatch ${cfg.color === c ? 'selected' : ''}" data-color="${c}" style="background:${c}"></button>`).join('');
+
+    const posCells = positions.map(p => {
+        const abbr = p.split('-').map(s => s[0]).join('');
+        return `<button class="pos-cell ${abbr} ${cfg.position === p ? 'selected' : ''}" data-pos="${p}"></button>`;
+    }).join('');
+
+    const chips = fields.map(([key, label]) => `
+        <button class="chip ${sel.has(key) ? 'selected' : ''}" data-field="${key}">
+            <span class="tick">✓</span>${esc(label)}
+        </button>`).join('');
+
+    const fontOpts = fonts.map(f => {
+        const label = f.split(',')[0].replace(/'/g, '').trim();
+        return `<option value="${esc(f)}" ${cfg.font_family === f ? 'selected' : ''} style="font-family:${esc(f)}">${esc(label)}</option>`;
+    }).join('');
+
+    return `
+    <div class="card">
+        <div class="card-head"><div class="card-ico c1">◈</div><div class="card-title">Overlay</div><span class="card-sub">Live on the PC</span></div>
+        <div class="settings-group">
+            <div class="set-row">
+                <div><div class="set-label">Enable in-game overlay</div><div class="set-desc">Shows live stats in a screen corner</div></div>
+                <button class="toggle ${cfg.enabled ? 'on' : ''}" id="ovToggle"></button>
+            </div>
+            <div class="set-row">
+                <div><div class="set-label">Accent color</div><div class="set-desc">Overlay text & bars color</div></div>
+                <div class="swatches">${swatches}
+                    <input type="color" class="swatch swatch-custom" id="ovCustomColor" value="${esc(cfg.color)}">
+                </div>
+            </div>
+            <div class="set-row">
+                <div><div class="set-label">Custom color (hex)</div><div class="set-desc">Type a hex code like #ff6b9d</div></div>
+                <input type="text" class="hex-input" id="ovColorHex" value="${esc(cfg.color)}" maxlength="7" spellcheck="false" placeholder="#7c6cff">
+            </div>
+            <div class="set-row">
+                <div><div class="set-label">Position</div><div class="set-desc">Where the overlay sits</div></div>
+                <div class="pos-grid">${posCells}</div>
+            </div>
+            <div class="set-row">
+                <div><div class="set-label">Text size</div><div class="set-desc">Overlay font size</div></div>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                    <span class="range-val" id="ovSizeVal">${cfg.font_size}</span>
+                    <input type="range" min="10" max="28" value="${cfg.font_size}" class="range" id="ovSize">
+                </div>
+            </div>
+            <div class="set-row">
+                <div><div class="set-label">Font family</div><div class="set-desc">Overlay font — pick from the list</div></div>
+                <div class="font-col">
+                    <select class="select font-select" id="ovFont">${fontOpts}</select>
+                    <div class="font-sample" id="ovFontSample" style="font-family:${esc(cfg.font_family)}">AaBbCc 0123 — overlay sample</div>
+                </div>
+            </div>
+            <div class="set-row">
+                <div><div class="set-label">Show / hide hotkey</div><div class="set-desc">Press this combo to toggle the overlay in-game</div></div>
+                <div class="hotkey-wrap">
+                    <input type="text" class="hotkey-input" id="ovHotkey" value="${esc(cfg.hotkey || 'Ctrl+Shift+O')}" maxlength="40" spellcheck="false" placeholder="Ctrl+Shift+O">
+                    <button class="btn btn-sm btn-primary" id="ovHotkeySave">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head"><div class="card-ico c3">▦</div><div class="card-title">Overlay Fields</div>
+            <button class="btn btn-sm" id="ovAll">All</button>
+            <button class="btn btn-sm" id="ovNone">Clear</button>
+        </div>
+        <div class="chips-meta" id="ovChipsMeta"></div>
+        <div class="chips">${chips}</div>
+    </div>
+
+    <div class="card">
+        <div class="card-head"><div class="card-ico c4">⏻</div><div class="card-title">Remote Control</div><span class="card-sub">Danger zone</span></div>
+        <div class="set-row">
+            <div><div class="set-label">Shut down BloomPlay</div><div class="set-desc">Closes the app, overlay, API and this dashboard on the PC</div></div>
+            <button class="btn btn-danger" id="quitBtn">Shutdown</button>
+        </div>
+    </div>`;
+}
+
+function refreshFontSample() {
+    const sample = document.getElementById('ovFontSample');
+    if (sample && overlayCfg && overlayCfg.font_family) sample.style.fontFamily = overlayCfg.font_family;
+}
+
+function applyOverlayLocal() {
+    if (!overlayCfg) return;
+    const cfg = overlayCfg;
+
+    const toggle = document.getElementById('ovToggle');
+    if (toggle) toggle.className = 'toggle ' + (cfg.enabled ? 'on' : '');
+
+    document.querySelectorAll('.swatch[data-color]').forEach(sw => {
+        sw.classList.toggle('selected', sw.dataset.color === cfg.color);
+    });
+    const custom = document.getElementById('ovCustomColor');
+    if (custom && document.activeElement !== custom) custom.value = cfg.color || '#7c6cff';
+    const hex = document.getElementById('ovColorHex');
+    if (hex && document.activeElement !== hex) hex.value = cfg.color || '#7c6cff';
+
+    document.querySelectorAll('.pos-cell').forEach(cell => {
+        cell.classList.toggle('selected', cell.dataset.pos === cfg.position);
+    });
+
+    const size = document.getElementById('ovSize');
+    const sizeVal = document.getElementById('ovSizeVal');
+    if (size) size.value = cfg.font_size || 14;
+    if (sizeVal) sizeVal.textContent = cfg.font_size || 14;
+
+    const font = document.getElementById('ovFont');
+    if (font && document.activeElement !== font && cfg.font_family) {
+        if (Array.from(font.options).some(o => o.value === cfg.font_family)) {
+            font.value = cfg.font_family;
+        } else if (font.options.length) {
+            font.value = font.options[0].value;
+        }
+    }
+
+    const hotkey = document.getElementById('ovHotkey');
+    if (hotkey && document.activeElement !== hotkey && cfg.hotkey) hotkey.value = cfg.hotkey;
+
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.classList.toggle('selected', (cfg.fields || []).includes(chip.dataset.field));
+    });
+
+    const meta = document.getElementById('ovChipsMeta');
+    if (meta) meta.textContent = `${(cfg.fields || []).length} of ${(cfg.available_fields || []).length} fields shown`;
+
+    refreshFontSample();
+}
+
+function wireSettings() {
+    const toggle = document.getElementById('ovToggle');
+    if (toggle) toggle.addEventListener('click', () => {
+        overlayCfg.enabled = !overlayCfg.enabled;
+        toggle.className = 'toggle ' + (overlayCfg.enabled ? 'on' : '');
+        patchOverlay({ enabled: overlayCfg.enabled });
+    });
+
+    document.querySelectorAll('.swatch[data-color]').forEach(sw => {
+        sw.addEventListener('click', () => {
+            overlayCfg.color = sw.dataset.color;
+            document.querySelectorAll('.swatch[data-color]').forEach(s => s.classList.toggle('selected', s.dataset.color === overlayCfg.color));
+            refreshFontSample();
+            patchOverlay({ color: overlayCfg.color });
+        });
+    });
+
+    const custom = document.getElementById('ovCustomColor');
+    if (custom) custom.addEventListener('input', () => {
+        overlayCfg.color = custom.value;
+        const hex = document.getElementById('ovColorHex');
+        if (hex) hex.value = custom.value;
+        document.querySelectorAll('.swatch[data-color]').forEach(s => s.classList.toggle('selected', false));
+        refreshFontSample();
+        patchOverlay({ color: custom.value });
+    });
+
+    const hex = document.getElementById('ovColorHex');
+    if (hex) {
+        hex.addEventListener('input', () => {
+            const v = hex.value.trim();
+            if (!/^#[0-9a-fA-F]{6}$/.test(v)) return;
+            overlayCfg.color = v;
+            document.querySelectorAll('.swatch[data-color]').forEach(s => s.classList.toggle('selected', false));
+            refreshFontSample();
+        });
+        hex.addEventListener('change', () => {
+            let v = hex.value.trim();
+            if (!/^#[0-9a-fA-F]{6}$/.test(v)) {
+                toast('Invalid hex code', 'err');
+                hex.value = overlayCfg.color || '#7c6cff';
+                return;
+            }
+            overlayCfg.color = v;
+            const customColor = document.getElementById('ovCustomColor');
+            if (customColor) customColor.value = v;
+            document.querySelectorAll('.swatch[data-color]').forEach(s => s.classList.toggle('selected', false));
+            refreshFontSample();
+            patchOverlay({ color: v });
+        });
+    }
+
+    document.querySelectorAll('.pos-cell').forEach(cell => {
+        cell.addEventListener('click', () => {
+            overlayCfg.position = cell.dataset.pos;
+            document.querySelectorAll('.pos-cell').forEach(c => c.classList.toggle('selected', c.dataset.pos === overlayCfg.position));
+            refreshFontSample();
+            patchOverlay({ position: overlayCfg.position });
+        });
+    });
+
+    const size = document.getElementById('ovSize');
+    const sizeVal = document.getElementById('ovSizeVal');
+    if (size) size.addEventListener('input', () => {
+        overlayCfg.font_size = Number(size.value);
+        if (sizeVal) sizeVal.textContent = size.value;
+        refreshFontSample();
+        patchOverlay({ font_size: Number(size.value) });
+    });
+
+    const font = document.getElementById('ovFont');
+    if (font) font.addEventListener('change', () => {
+        overlayCfg.font_family = font.value;
+        refreshFontSample();
+        patchOverlay({ font_family: font.value });
+    });
+
+    const hotkey = document.getElementById('ovHotkey');
+    const hotkeySave = document.getElementById('ovHotkeySave');
+    if (hotkey && hotkeySave) hotkeySave.addEventListener('click', () => {
+        let v = hotkey.value.trim();
+        if (!v) { toast('Hotkey cannot be empty', 'err'); return; }
+        overlayCfg.hotkey = v;
+        toast('Hotkey saved: ' + v);
+        patchOverlay({ hotkey: v });
+    });
+
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const key = chip.dataset.field;
+            const fields = overlayCfg.fields || [];
+            const i = fields.indexOf(key);
+            if (i >= 0) fields.splice(i, 1); else fields.push(key);
+            overlayCfg.fields = fields;
+            applyOverlayLocal();
+            patchOverlay({ fields });
+        });
+    });
+
+    const allBtn = document.getElementById('ovAll');
+    if (allBtn) allBtn.addEventListener('click', () => {
+        overlayCfg.fields = (overlayCfg.available_fields || []).map(f => f[0]);
+        applyOverlayLocal();
+        patchOverlay({ fields: overlayCfg.fields });
+    });
+    const noneBtn = document.getElementById('ovNone');
+    if (noneBtn) noneBtn.addEventListener('click', () => {
+        overlayCfg.fields = [];
+        applyOverlayLocal();
+        patchOverlay({ fields: [] });
+    });
+
+    const quitBtn = document.getElementById('quitBtn');
+    if (quitBtn) quitBtn.addEventListener('click', () => {
+        confirmBox('Shut down BloomPlay?', 'This closes the app, overlay, API and dashboard on the PC.', async () => {
+            try {
+                await api('/shutdown', { method: 'POST' });
+                toast('Shutting down…');
+            } catch { toast('Failed', 'err'); }
+        });
+    });
+}
+
+async function patchOverlay(patch) {
+    try {
+        const res = await api('/overlay/config', { method: 'POST', body: JSON.stringify(patch) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const updated = await res.json();
+        Object.assign(overlayCfg, updated);
+        applyOverlayLocal();
+    } catch {
+        toast('Could not save setting', 'err');
+    }
+}
+
+function offlineHtml() {
+    return `<div class="offline-wrap">
+        <div class="o-ico">📡</div>
+        <h2>Can't reach the PC</h2>
+        <p>BloomPlay seems offline. Make sure it's running on your PC and both devices are on the same network.</p>
+        <button class="btn btn-primary" onclick="location.reload()">Retry</button>
+    </div>`;
+}
+
+async function loadStats() {
+    try {
+        const res = await api('/stats');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        setOnline(true);
+        if (!overviewBuilt || !document.getElementById('perfChart')) {
+            viewEl.innerHTML = buildOverview();
+            overviewBuilt = true;
+        }
+        updateOverview(data);
+    } catch {
+        setOnline(false);
+        if (currentView === 'overview') viewEl.innerHTML = offlineHtml();
+    }
+}
+
+async function loadHardware() {
+    try {
+        const res = await api('/hardware');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const fresh = await res.json();
+        if (JSON.stringify(fresh) !== JSON.stringify(hardwareCache)) {
+            hardwareCache = fresh;
+            viewEl.innerHTML = renderHardware(fresh);
+            wireHardware();
+        } else {
+            hardwareCache = fresh;
+        }
+    } catch {
+        setOnline(false);
+        if (currentView === 'hardware') viewEl.innerHTML = offlineHtml();
+    }
+}
+
+async function loadShots() {
+    try {
+        const res = await api('/screenshot/list');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const key = JSON.stringify(data);
+        if (key !== shotsCache) {
+            shotsCache = key;
+            viewEl.innerHTML = renderScreenshots(data);
+            wireScreenshots();
+        }
+    } catch {
+        setOnline(false);
+        if (currentView === 'screenshots') viewEl.innerHTML = offlineHtml();
+    }
+}
+
+async function loadDevices() {
+    try {
+        const [dRes, bRes] = await Promise.all([api('/devices'), api('/devices/blocked')]);
+        if (!dRes.ok || !bRes.ok) throw new Error('HTTP ' + dRes.status);
+        const devices = await dRes.json();
+        const blocked = await bRes.json();
+        const devList = (devices && devices.devices) || [];
+        const blockList = (blocked && blocked.blocked) || [];
+        const key = JSON.stringify({
+            devices: devList.map(d => ({ ip: d.ip, ua: d.user_agent, since: Math.floor(num(d.connected_since) / 60) * 60 })),
+            blocked: blockList.map(b => ({ ip: b.ip, rem: Math.ceil(num(b.remaining_seconds) / 10) * 10 })),
+        });
+        if (key !== devicesCache) {
+            devicesCache = key;
+            viewEl.innerHTML = renderDevices({ devices: devList, blocked: blockList });
+            wireDevices();
+        }
+    } catch {
+        setOnline(false);
+        if (currentView === 'devices') viewEl.innerHTML = offlineHtml();
+    }
+}
+
+async function loadSettings() {
+    try {
+        const res = await api('/overlay/config');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const cfg = await res.json();
+        overlayCfg = cfg;
+        if (!settingsBuilt || !document.getElementById('ovToggle')) {
+            viewEl.innerHTML = renderSettings(cfg);
+            settingsBuilt = true;
+            wireSettings();
+        }
+        applyOverlayLocal();
+    } catch {
+        setOnline(false);
+        if (currentView === 'settings') viewEl.innerHTML = offlineHtml();
+    }
+}
+
+async function loadSystem() {
+    try {
+        const res = await api('/system');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const s = await res.json();
+        if (s.hostname) hostName.textContent = s.hostname;
+        setOnline(true);
+    } catch { setOnline(false); }
+}
+
+function setView(view) {
+    if (view === currentView && viewEl.innerHTML) return;
+    currentView = view;
+    overviewBuilt = false;
+    settingsBuilt = false;
+    hardwareCache = null;
+    shotsCache = null;
+    devicesCache = null;
+    NAV_ITEMS.forEach(item => item.classList.toggle('active', item.dataset.view === view));
+    const meta = VIEW_META[view];
+    pageTitle.textContent = meta.title;
+    pageSub.textContent = meta.sub;
+    startPolling();
+}
+
+function startPolling() {
+    clearInterval(pollTimer);
+    pollTimer = setInterval(poll, 1000);
+    poll();
+}
+
+function poll() {
+    if (currentView === 'overview') loadStats();
+    else if (currentView === 'hardware') loadHardware();
+    else if (currentView === 'screenshots') loadShots();
+    else if (currentView === 'devices') loadDevices();
+    else if (currentView === 'settings') loadSettings();
+}
+
+NAV_ITEMS.forEach(item => item.addEventListener('click', () => setView(item.dataset.view)));
+
+(function init() {
+    fmtClock();
+    loadSystem();
+    setView('overview');
+})();
+</script>
+</body>
+</html>
