@@ -1,0 +1,26 @@
+# Core
+PyQt5>=5.15.9
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+
+# System info
+psutil>=5.9.5
+pynvml>=11.5.0
+GPUtil>=1.4.0
+
+# Networking
+ping3>=4.0.4
+
+# QR code
+qrcode[pil]>=7.4.2
+
+# Excel logging
+openpyxl>=3.1.2
+
+# Windows-only (installed only on Windows)
+WMI>=1.5.1 ; sys_platform == "win32"
+pywin32>=306 ; sys_platform == "win32"
+pythonnet>=3.0.3 ; sys_platform == "win32"  # embeds LibreHardwareMonitorLib.dll — see collectors/hwmonitor.py
+
+# For building EXE (optional, dev-only)
+# pyinstaller>=6.0
