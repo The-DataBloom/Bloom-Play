@@ -329,8 +329,6 @@ BloomPlay ships with a **full screenshot system**: capture your screen remotely,
 </tr>
 </table>
 
-> 📌 Images live in `assets/screenshots/`. Take your own captures and drop them in with the exact filenames above — or rename paths here to match your shots.
-
 ---
 
 ## 📄 PDF Hardware Reports
